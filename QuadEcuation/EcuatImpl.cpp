@@ -1,10 +1,40 @@
-#include<iostream>
-#include<fstream>
-#include<cmath>
 #include"EcuatHeader.h"
-#include<vld.h>
 
-using namespace std;
+solve* solveInit(solve* mySolve)
+{
+	mySolve = (solve*)malloc(sizeof(solve));
+	if (mySolve == NULL)
+		return NULL;
+
+	mySolve->root_1 = (double*)malloc(sizeof(double));
+	if (mySolve->root_1 == NULL)
+	{
+		free(mySolve);
+		return NULL;
+	}
+
+	mySolve->root_2 = (double*)malloc(sizeof(double));
+	if (mySolve->root_2 == NULL)
+	{
+		free(mySolve->root_1);
+		free(mySolve);
+		return NULL;
+	}
+
+	return mySolve;
+}
+
+void solveDelete(solve* mySolve)
+{
+	if (mySolve != NULL)
+	{
+		if (mySolve->root_1 != NULL)
+			free(mySolve->root_1);
+		if (mySolve->root_2 != NULL)
+			free(mySolve->root_2);
+		free(mySolve);
+	}
+}
 
 double EcuatDisc(double a, double b, double c)
 {
@@ -14,7 +44,7 @@ double EcuatDisc(double a, double b, double c)
 	return result;
 }
 
-void EcuatSolver(solve* mySolve, double a, double b, double c)
+void EcuatSolver(double a, double b, double c, solve* mySolve)
 {
 	double discriminant;
 
@@ -71,35 +101,4 @@ void EcuatSolvePrint(solve* mySolve)
 		cout << "Root is any number" << endl;
 		break;
 	}
-}
-
-int main(void)
-{
-	double a, b, c;
-	solve mySolve;
-
-	mySolve.root_1 = (double*)malloc(sizeof(double));
-	if (mySolve.root_1 == NULL)
-	{
-		cout << "Error: not enough memory" << endl;
-		return -1;
-	}
-
-	mySolve.root_2 = (double*)malloc(sizeof(double));
-	if (mySolve.root_2 == NULL)
-	{
-		free(mySolve.root_1);
-		cout << "Error: not enough memory" << endl;
-		return -1;
-	}
-
-	cout << "Input coefficients of quad ecuation: ";
-	cin >> a >> b >> c;
-
-	EcuatSolver(&mySolve, a, b, c);
-
-	EcuatSolvePrint(&mySolve);
-	free(mySolve.root_1);
-	free(mySolve.root_2);
-	return 0;
 }

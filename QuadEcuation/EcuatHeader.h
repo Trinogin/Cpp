@@ -3,16 +3,25 @@
 
 #pragma once
 
-struct solve
+#include<iostream>
+#include<fstream>
+
+using namespace std;
+
+typedef struct solve
 {
 	int num;
 	double* root_1;
 	double* root_2;
-};
+}solve;
+
+solve* solveInit(solve* mySolve);
+
+void solveDelete(solve* mySolve);
 
 double EcuatDisc(double a, double b, double c);
 
-void EcuatSolver(solve* mySolve, double a, double b, double c);
+void EcuatSolver(double a, double b, double c, solve* mySolve);
 
 void EcuatSolvePrint(solve* mySolve);
 
